@@ -1,32 +1,25 @@
 import {Router} from 'express'
 import {body, oneOf, validationResult} from 'express-validator'
 import {errorsHandler} from './modules/middlewares'
-
+import { deleteProduct } from './handlers/product';
+import {createProduct, getOneProduct, getProducts }from './handlers/product'
 const router = Router() //our API
 
 /**
  * Prodcut
  */
-router.get('/product',(req,res) => {
-    res.json({message:req.secret})
-})
+router.get('/product', getProducts)
 
-router.get('/product/:id',body('id').exists(),errorsHandler,(req,res) => {
-
-})
+router.get('/product/:id',body('id').exists(),errorsHandler,getOneProduct)
 
 router.put('/product/:id', body('name').isString(),errorsHandler, (req,res) => {
     const errors = validationResult(req);
 
 })
 
-router.post('/product',body('name').isString(),errorsHandler,(req,res) => {
-    
-})
+router.post('/product',body('name').isString(),errorsHandler, createProduct)
 
-router.delete('/product:id',body('id').exists(),errorsHandler,(req,res) => {
-
-})
+router.delete('/product:id',body('id').exists(),errorsHandler,deleteProduct)
 
 /**
  * id
@@ -53,6 +46,7 @@ router.put('/update:id',
 router.post('/update',
 body('title'),
 body('body').exists().isString(),
+body('productId').exists().isString(),
 errorsHandler,
 () => {
     
